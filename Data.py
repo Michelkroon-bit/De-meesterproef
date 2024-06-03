@@ -479,4 +479,8 @@ words = [
 	"zever",
 	"zeeen"
 ]
-zinnen = ["WELKOM BIJ LINGOOOOOOOOOOOOOOOOOOO DE LEUKSTE SPELSHOW VAN DE BENELUX" , "vul team naam 1 in " , "vul team naam 2 in " , "vul hier uw woord in "]
+zinnen = ["WELKOM BIJ LINGOOOOOOOOOOOOOOOOOOO DE LEUKSTE SPELSHOW VAN DE BENELUX" , "vul team naam 1 in " , "vul team naam 2 in " , "vul hier uw woord in " , "Goed geraden" , "Fout geraden"]
+teams = []
+team = {}
+beurt = 0
+rondes = 0
