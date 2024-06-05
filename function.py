@@ -2,6 +2,7 @@ import pygame
 import time
 import sys
 from Data import *
+import string
 import random
 import termcolor
 
@@ -38,11 +39,19 @@ def play_lingo(te_raden):
             beurt += 1
             continue
         
+        
+            
         else:
             for i, letter in enumerate(woord_invullen):
                 
             
-                
+                if letter not in string.ascii_lowercase:
+                    print("FOUTE INPUT!! alleen letters zijn toegestaan")
+                    geraden_letters = te_raden[0] + "_" * (len(te_raden) - 1)
+                    empty_string = woord_invullen
+                    beurt += 1
+                    break
+                    
                 if letter == te_raden[i]:
                     geraden_letters.append(letter)
                     empty_string += termcolor.colored(letter, 'green') + " "
