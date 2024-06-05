@@ -479,8 +479,24 @@ words = [
 	"zever",
 	"zeeen"
 ]
-zinnen = ["WELKOM BIJ LINGOOOOOOOOOOOOOOOOOOO DE LEUKSTE SPELSHOW VAN DE BENELUX" , "vul team naam 1 in " , "vul team naam 2 in " , "vul hier uw woord in " , "Goed geraden" , "Fout geraden"]
+zinnen = ["WELKOM BIJ LINGOOOOOOOOOOOOOOOOOOO DE LEUKSTE SPELSHOW VAN DE BENELUX\n" ,
+          "vul team naam 1 in\n " , 
+          "vul team naam 2 in\n " ,
+          "vul hier uw woord in\n " ,
+          "Goed geraden\n" ,
+          "Fout geraden\n",
+          "Helaas, je hebt alle beurten gebruikt. Het juiste woord was:\n",
+          "Je moet wel een 5 leter woord invullen\n",
+          "Je hebt het woord goed geraden je mag nu in de ballenbak grabbelen",
+          "Team 1 is aan zet",
+          "Team 2 is aan zet"]
+
+beurt_team = 1
 teams = []
 team = {}
 beurt = 0
 rondes = 0
+
+speciale_ballen = ["ROOD" , "ROOD" , "ROOD" , "GROEN","GROEN","GROEN"]
+ballen_team_a = [2,4,6,8,10]
+ballen_team_b = [1,3,5,7,9]
