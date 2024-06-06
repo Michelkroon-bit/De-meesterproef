@@ -15,7 +15,6 @@ te_raden = random.choice(words)
 abc = play_lingo(te_raden)
 
 if abc == "goed geraden":
-    typemachine_print(f"{colored(te_raden,'green')}\n")
     typemachine_print(zinnen[8])
     #play_bingo()
 
