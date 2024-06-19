@@ -1,11 +1,11 @@
-import pygame
-import time
-import sys
 import Data
-import string
 import random
 from termcolor import colored
 from tabulate import tabulate
+import string
+import time
+import sys
+
 
 def typemachine_print(prompt, speed):
     for x in prompt:
@@ -13,6 +13,7 @@ def typemachine_print(prompt, speed):
         sys.stdout.flush()
         time.sleep(speed)
     return prompt
+
 
 def switch_teams():
     if Data.current_team == Data.teamA:
@@ -56,7 +57,6 @@ def play_lingo(te_raden):
     return Data.zinnen[6], te_raden
 
 
-
 def check_for_conditions(woord_invullen, te_raden, attempts):
     if woord_invullen == te_raden:
         print("\n" + colored("Goed geraden!", 'green'))
@@ -92,10 +92,10 @@ def check_for_conditions(woord_invullen, te_raden, attempts):
     return "continue"
 
 
-
 def generate_bingokaart(odd_or_even):
     bingokaart = []
     indiviuele_getallen = []
+    gegenereerde_getallen = set()
     getal = 0
     max_number = 30
 
@@ -105,9 +105,10 @@ def generate_bingokaart(odd_or_even):
         else:
             random_getal = random.randint(0, max_number) * 2
 
-        if random_getal not in indiviuele_getallen:
+        if random_getal not in gegenereerde_getallen:
             getal += 1
             indiviuele_getallen.append(random_getal)
+            gegenereerde_getallen.add(random_getal)  # Voeg toe aan de set van gegenereerde getallen
             if getal % 4 == 0:
                 bingokaart.append(indiviuele_getallen)
                 indiviuele_getallen = []
@@ -120,42 +121,62 @@ def display_bingokaart(bingokaart):
 
 
 def grab_bal():
-    ballenbak = Data.ballen_even + Data.ballen_odd + Data.speciale_ballen
-    nummers = [bal for bal in ballenbak if isinstance(bal, int)]
-    even_nummers = [bal for bal in nummers if bal % 2 == 0]
-    oneven_nummers = [bal for bal in nummers if bal % 2 != 0]
-
     getrokken_ballen = []
-    for _ in range(2):  # Trek twee keer een bal
+    for x in range(2):
         if Data.current_team["even_or_odd"] == "odd":
-            if oneven_nummers:
-                nummer = random.choice(oneven_nummers)
-                getrokken_ballen.append(nummer)
-                ballenbak.remove(nummer)
-        else:
-            if even_nummers:
-                nummer = random.choice(even_nummers)
-                getrokken_ballen.append(nummer)
-                ballenbak.remove(nummer)
+            random_bal = random.choice(Data.ballen_odd)
+            getrokken_ballen.append(random_bal)
+            Data.ballen_odd.remove(random_bal)
+        elif Data.current_team["even_or_odd"] == "even":
+            random_bal = random.choice(Data.ballen_even)
+            getrokken_ballen.append(random_bal)
+            Data.ballen_even.remove(random_bal)
     return getrokken_ballen
+
+
+def check_getrokken_ballen(getrokken_ballen):
+    numerieke_ballen = []
+    
+    
+    for bal in getrokken_ballen:
+        if isinstance(bal, int):
+            numerieke_ballen.append(bal)
+        elif bal == "ROOD":
+            Data.current_team["red_ball"] += 1
+        elif bal == "GROEN":
+            Data.current_team["green_ball"] += 1
+    
+    print(numerieke_ballen)
+    return numerieke_ballen
 
 
 
 def bingo_turn(team_name, kaart):
     print(f"Het is {Data.current_team['name']}`s beurt!")
     
-    if Data.current_team["even_or_odd"] == "odd":
-        ballenlijst = Data.ballen_odd
-    elif Data.current_team["even_or_odd"] == "even":
-        ballenlijst = Data.ballen_even
+    Data.getrokken_ballen = grab_bal()
+    if not Data.getrokken_ballen:
+        print("Er zijn geen ballen beschikbaar om te trekken!")
+        return None
+    
+    if len(Data.getrokken_ballen) != 2:
+        print("Er is iets misgegaan, het aantal getrokken ballen is niet gelijk aan 2!")
+        return None
 
-    getrokken_ballen = grab_bal()
-    print(f"{Data.current_team['name']} heeft balnummer {getrokken_ballen[0]} en {getrokken_ballen[1]} getrokken.")
+    print(f"{Data.current_team['name']} heeft balnummer {Data.getrokken_ballen[0]} en {Data.getrokken_ballen[1]} getrokken.")
+    return Data.getrokken_ballen
+
+
 
 def mark_numbers_on_card(kaart, getrokken_ballen):
+    count = 0
     for nummer in getrokken_ballen:
-        for rij in kaart:
-            for i in range(len(rij)):
-                if rij[i] == nummer:
-                    rij[i] = colored("X", 'red')
+        if isinstance(nummer, int):
+            for rij in kaart:
+                for i in range(len(rij)):
+                    if rij[i] == nummer:
+                        rij[i] = colored("●", 'yellow')
+                        count += 1
+                        if count == 2:  # Stoppen na de eerste twee afvinkingen
+                            return kaart
     return kaart

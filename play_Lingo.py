@@ -1,30 +1,29 @@
-import Data 
+import Data
 import random
-from function import * 
+from function import *
 from termcolor import colored
-
 
 print(Data.zinnen[0])
 team_1 = input(Data.zinnen[1])
 team_2 = input(Data.zinnen[2])
 
 Data.teamA = {
-    "name": team_1, 
-    "red_ball": 0, 
-    "green_ball": 0, 
-    "correct_words": 0, 
-    "lingo": False, 
-    "even_or_odd":"odd",
+    "name": team_1,
+    "red_ball": 0,
+    "green_ball": 0,
+    "correct_words": 0,
+    "lingo": False,
+    "even_or_odd": "odd",
     "kaart": generate_bingokaart("odd")
 }
 
 Data.teamB = {
-    "name": team_2, 
-    "red_ball": 0, 
-    "green_ball": 0, 
-    "correct_words": 0, 
-    "lingo": False, 
-    "even_or_odd":"even",
+    "name": team_2,
+    "red_ball": 0,
+    "green_ball": 0,
+    "correct_words": 0,
+    "lingo": False,
+    "even_or_odd": "even",
     "kaart": generate_bingokaart("even")
 }
 
@@ -36,27 +35,36 @@ bingokaart_teamB = generate_bingokaart("even")
 while True:
     random_word = get_random_word(Data.words)
     print(random_word)
-    
-    result, te_raden = play_lingo(random_word)
 
+    result, te_raden = play_lingo(random_word)
 
     if result == "goed geraden":
         typemachine_print(Data.zinnen[8], 0.10)
-        odd_or_even = "odd" if Data.current_team == Data.teamA else "even"
-        
+
         if Data.current_team == Data.teamA:
             bingokaart = bingokaart_teamA
         else:
             bingokaart = bingokaart_teamB
-            
-        bingo_turn(Data.current_team["name"], bingokaart)
-        getrokken_ballen = grab_bal()
-        
-        mark_numbers_on_card(bingokaart, getrokken_ballen)  
+
+        getrokken_ballen = bingo_turn(Data.current_team["name"], bingokaart)
+        if getrokken_ballen is None:
+            continue
+        numerieke_ballen = check_getrokken_ballen(getrokken_ballen)
+        mark_numbers_on_card(bingokaart, getrokken_ballen)
         display_bingokaart(bingokaart)
+
+        print(f"\n+----+-Team: {Data.current_team['name']}-+----+")
+        print("+----+----+----+----+")
+        print(f"|groene ballen:    {Data.current_team['green_ball']}|")
+        print("+----+----+----+----+")
+        print(f"|rode ballen:      {Data.current_team['red_ball']}|")
+        print("+----+----+----+----+")
+        print(f"|correcte woorden: {Data.current_team['correct_words']}|")
+        print("+----+----+----+----+\n")
+
         switch_teams()
-        
-    else:
-        
-        switch_teams()
-        
+
+# pas bug aan met afstrepen kaart
+# fix bug van tellen
+# fix alle spelfouten
+# werk aan de flowchart

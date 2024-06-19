@@ -495,7 +495,7 @@ zinnen = ["WELKOM BIJ LINGOOOOOOOOOOOOOOOOOOO DE LEUKSTE SPELSHOW VAN DE BENELUX
           "Je invoer bevat alleen dezelfde letter. Voer een geldig woord in.",#11
           "FOUTE INPUT!! alleen letters zijn toegestaan",#12
           "Je moet wel een 5 letter woord invullen"]#13
-
+getrokken_ballen = []
 
 beurt_team = 1
 teams = []
@@ -503,6 +503,8 @@ team = {}
 beurt = 0
 rondes = 0
 
+red_ball_count = 0
+green_ball_count = 0 
 
 teamA = {}
 teamB = {}
@@ -512,10 +514,8 @@ current_team = teamA
 team_name = ""
 kaart = ""
 ballenbak = []
-
-speciale_ballen = ["ROOD" , "ROOD" , "ROOD" , "GROEN","GROEN","GROEN"]
-ballen_even = [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32]
-ballen_odd = [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33]
+ballen_even = [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,"ROOD" , "ROOD" , "ROOD" , "GROEN","GROEN","GROEN"]
+ballen_odd = [1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,"ROOD" , "ROOD" , "ROOD" , "GROEN","GROEN","GROEN"]
 
 
 # def get_teams():
