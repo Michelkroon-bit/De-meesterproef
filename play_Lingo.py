@@ -14,7 +14,8 @@ Data.teamA = {
     "correct_words": 0,
     "lingo": False,
     "even_or_odd": "odd",
-    "kaart": generate_bingokaart("odd")
+    "kaart": generate_bingokaart("odd"),
+    "incorrect streak" : 0
 }
 
 Data.teamB = {
@@ -24,7 +25,8 @@ Data.teamB = {
     "correct_words": 0,
     "lingo": False,
     "even_or_odd": "even",
-    "kaart": generate_bingokaart("even")
+    "kaart": generate_bingokaart("even"),
+    "incorrect_streak" : 0
 }
 
 Data.current_team = Data.teamA
@@ -32,7 +34,8 @@ Data.current_team = Data.teamA
 bingokaart_teamA = generate_bingokaart("odd")
 bingokaart_teamB = generate_bingokaart("even")
 
-while True:
+
+while Data.current_team["lingo"] == False :
     random_word = get_random_word(Data.words)
     print(random_word)
 
@@ -61,10 +64,8 @@ while True:
         print("+----+----+----+----+")
         print(f"|correcte woorden: {Data.current_team['correct_words']}|")
         print("+----+----+----+----+\n")
-
+        
         switch_teams()
 
-# pas bug aan met afstrepen kaart
-# fix bug van tellen
-# fix alle spelfouten
-# werk aan de flowchart
+
+#all(cell == yellow_dot for cell in rij) controleert of elke cel in de huidige rij gemarkeerd is met yellow_dot.
