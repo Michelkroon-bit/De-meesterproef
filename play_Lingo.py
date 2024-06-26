@@ -15,7 +15,7 @@ Data.teamA = {
     "lingo": False,
     "even_or_odd": "odd",
     "kaart": generate_bingokaart("odd"),
-    "incorrect streak" : 0
+    "incorrect_streak" : 0
 }
 
 Data.teamB = {
@@ -30,12 +30,11 @@ Data.teamB = {
 }
 
 Data.current_team = Data.teamA
-
 bingokaart_teamA = generate_bingokaart("odd")
 bingokaart_teamB = generate_bingokaart("even")
 
 
-while Data.current_team["lingo"] == False :
+while Data.current_team["lingo"] == False:
     random_word = get_random_word(Data.words)
     print(random_word)
 
@@ -53,19 +52,18 @@ while Data.current_team["lingo"] == False :
         if getrokken_ballen is None:
             continue
         numerieke_ballen = check_getrokken_ballen(getrokken_ballen)
-        mark_numbers_on_card(bingokaart, getrokken_ballen)
-        display_bingokaart(bingokaart)
+        # mark_numbers_on_card(bingokaart, getrokken_ballen)
+        # display_bingokaart(bingokaart)
 
         print(f"\n+----+-Team: {Data.current_team['name']}-+----+")
         print("+----+----+----+----+")
         print(f"|groene ballen:    {Data.current_team['green_ball']}|")
         print("+----+----+----+----+")
-        print(f"|rode ballen:      {Data.current_team['red_ball']}|")
+        print(f"|rode ballen:     {Data.current_team['red_ball']} |")
         print("+----+----+----+----+")
         print(f"|correcte woorden: {Data.current_team['correct_words']}|")
         print("+----+----+----+----+\n")
         
         switch_teams()
 
-
-#all(cell == yellow_dot for cell in rij) controleert of elke cel in de huidige rij gemarkeerd is met yellow_dot.
+print("Einde van het spel! Winnaar: " + Data.current_team['name'])

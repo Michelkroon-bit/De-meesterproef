@@ -40,7 +40,7 @@ def display_grid(attempts, word_length):
 
 def play_lingo(te_raden):
     print(f"Team {Data.current_team['name']} is aan de beurt! Veel succes!")
-    
+    Data.incorrect_streak = 0
     beurt = 0
     attempts = [[te_raden[0]] + ["_"] * (len(te_raden) - 1)]
     display_grid(attempts, len(te_raden))
@@ -55,24 +55,22 @@ def play_lingo(te_raden):
         else:
             Data.incorrect_streak += 1
             if Data.incorrect_streak >= 3:
-                
                 Data.current_team["incorrect_streak"] += 1
                 print(Data.zinnen[15])
                 if Data.current_team["incorrect_streak"] == 3:
-                    print(f"team {Data.current_team['Name']} {Data.zinnen[17]}")
+                    print(f"team {Data.current_team['name']} {Data.zinnen[17]}")
                     break
                 else:
                     switch_teams()
                 return "incorrect_streak", te_raden
                 
         beurt += 1
- 
-
-
+    
+    
+    
     print("\n" + colored("Helaas, je hebt het woord niet geraden.", 'red'))
     print(f"Het juiste woord was: {te_raden}")
     return Data.zinnen[6], te_raden
-
 
 
 def check_for_conditions(woord_invullen, te_raden, attempts):
@@ -89,6 +87,11 @@ def check_for_conditions(woord_invullen, te_raden, attempts):
         print(Data.zinnen[13])
         return "invalid length"
 
+    for letter in set(woord_invullen):
+        if woord_invullen.count(letter) >= 3:
+            print("\n" + colored(Data.zinnen[11], 'red'))
+            return "invalid input"
+    
     geraden_letters = []
     for i, letter in enumerate(woord_invullen):
         if letter not in string.ascii_lowercase or letter == "":
@@ -108,7 +111,6 @@ def check_for_conditions(woord_invullen, te_raden, attempts):
     attempts.append(geraden_letters)
     display_grid(attempts, len(te_raden))
     return "continue"
-
 
 
 def generate_bingokaart(odd_or_even):
@@ -131,13 +133,12 @@ def generate_bingokaart(odd_or_even):
             if getal % 4 == 0:
                 bingokaart.append(indiviuele_getallen)
                 indiviuele_getallen = []
-
+    
     return bingokaart
 
 
 def display_bingokaart(bingokaart):
     print(tabulate(bingokaart, tablefmt="grid"))
-
 
 
 def grab_bal():
@@ -151,13 +152,12 @@ def grab_bal():
             random_bal = random.choice(Data.ballen_even)
             getrokken_ballen.append(random_bal)
             Data.ballen_even.remove(random_bal)
+            
     return getrokken_ballen
-
 
 
 def check_getrokken_ballen(getrokken_ballen):
     numerieke_ballen = []
-    
     
     for bal in getrokken_ballen:
         if isinstance(bal, int):
@@ -166,12 +166,25 @@ def check_getrokken_ballen(getrokken_ballen):
             Data.current_team["red_ball"] += 1
         elif bal == "GROEN":
             Data.current_team["green_ball"] += 1
+            
     return numerieke_ballen
 
 
+def check_win_or_loss():
+    if Data.current_team["red_ball"] >= 3:
+        print(f"Team {Data.current_team['name']} heeft verloren vanwege 3 rode ballen!")
+        print("einde spel")
+        exit()
+    elif Data.current_team["green_ball"] >= 3:
+        print(f"Team {Data.current_team['name']} heeft gewonnen vanwege 3 groene ballen!")
+        print("einde spel")
+        exit()
+    else:
+        return "continue"
+
 
 def bingo_turn(team_name, kaart):
-    print(f"Het is {Data.current_team['name']}`s beurt!")
+   
     
     Data.getrokken_ballen = grab_bal()
     if not Data.getrokken_ballen:
@@ -182,9 +195,16 @@ def bingo_turn(team_name, kaart):
         print("Er is iets misgegaan, het aantal getrokken ballen is niet gelijk aan 2!")
         return None
 
-    print(f"{Data.current_team['name']} heeft balnummer {Data.getrokken_ballen[0]} en {Data.getrokken_ballen[1]} getrokken.")
-    return Data.getrokken_ballen
+    check_getrokken_ballen(Data.getrokken_ballen)
+    status = check_win_or_loss()
+    if status in ["won", "lost"]:
+        return status
 
+    print(f"Team {Data.current_team['name']} heeft de volgende ballen getrokken: {Data.getrokken_ballen}")
+    mark_numbers_on_card(kaart, Data.getrokken_ballen)
+    display_bingokaart(kaart)  
+
+    return "continue"
 
 
 def mark_numbers_on_card(kaart, getrokken_ballen):
@@ -193,7 +213,6 @@ def mark_numbers_on_card(kaart, getrokken_ballen):
             for j, number in enumerate(row):
                 if number == ball:
                     kaart[i][j] = colored("X", 'yellow')
-
 
 
 def check_for_bingo(kaart):
@@ -211,13 +230,13 @@ def check_for_bingo(kaart):
         if sum(rij[kolom] == yellow_X for rij in kaart) == len(kaart):
             return True
 
-    #diagonale 
+    # diagonaal 
     if sum(kaart[i][i] == yellow_X for i in range(len(kaart))) == len(kaart):
         return True
 
-    #diagonale andere kant op
+    # andere diagonaal
     if sum(kaart[i][len(kaart) - 1 - i] == yellow_X for i in range(len(kaart))) == len(kaart):
         return True
 
-    print("Er is nog geen bingo gevonden het andere team is nu aan de beurt")
+    print("Er is nog geen bingo gevonden, het andere team is nu aan de beurt")
     return False
